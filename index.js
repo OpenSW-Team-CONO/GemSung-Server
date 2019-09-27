@@ -6,6 +6,25 @@ app.get('/', function (req, res) {
   res.send('Hello World!');
 });
 
+app.get('/ffmpeg', function(req, res) {
+  var spawn = require('child_process').spawn, ls = spawn('ffmpeg', ['-version']);
+  
+  ls.stdout.on('data', function(data) {
+      console.log('stdout: ' + data);
+      res.send('out: ' + data)
+  });
+  
+  ls.stderr.on('data', function(data) {
+      console.log('stderr: ' + data);
+
+      res.send('error: ' + data);
+  });
+  
+  ls.on('exit', function(code) {
+      console.log('exit: ' + code);
+  });
+});
+
 app.listen(PORT, function () {
   console.log(`Example app listening on port ${PORT}!`);
 });

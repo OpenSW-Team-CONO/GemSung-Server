@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/OpenSW-Team-CONO/GemSung-Server#readme",
   "dependencies": {
+    "child_process": "^1.0.2",
     "express": "^4.17.1"
   }
 }

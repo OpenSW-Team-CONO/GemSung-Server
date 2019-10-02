@@ -25,6 +25,11 @@ app.get('/ffmpeg', function(req, res) {
   });
 });
 
+app.post('/video', function(req, res) {
+  console.log('request body', req.body);
+  res.send('ok');
+})
+
 app.listen(PORT, function () {
   console.log(`Example app listening on port ${PORT}!`);
 });

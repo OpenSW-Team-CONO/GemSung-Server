@@ -1,6 +1,9 @@
 const PORT = process.env.PORT || 5000
 var express = require('express');
 var app = express();
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json());
 
 app.get('/', function (req, res) {
   res.send('Hello World!');

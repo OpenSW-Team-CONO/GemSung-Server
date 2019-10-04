@@ -27,6 +27,7 @@
     "http": "0.0.0",
     "image-downloader": "^3.5.0",
     "mime": "^2.4.4",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "videoshow": "^0.1.11"
   }
 }

@@ -57,6 +57,13 @@ app.post("/video", function(req, res) {
   res.send("ok");
 });
 
+app.get('/temp', (req, res) => {
+  var fs = require("fs");
+  var path = require("path");
+  var temp_dir = path.join(process.cwd(), 'temp/');
+  res.send(`path: ${temp_dir}`);
+});
+
 app.get("/test", function(req, res) {
   console.log('env type:', process.env.type);
   const keyFilename = "./private/service-account.json";

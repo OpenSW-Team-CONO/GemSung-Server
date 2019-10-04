@@ -71,7 +71,7 @@ if (!fs.existsSync(temp_dir)){
   console.log("file will save at ", tempPath);
   const options = {
     url:
-      "https://www.nasa.gov/sites/default/files/styles/full_width/public/thumbnails/image/hs-2015-02-a-hires_jpg.jpg?itok=-DDRNP3D",
+      "https://live.staticflickr.com/7151/6760135001_14c59a1490_o.jpg",
     dest: tempPath // Save to /path/to/dest/image.jpg
   };
   download

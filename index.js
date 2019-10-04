@@ -18,7 +18,7 @@ const serviceAccount = {
   "client_x509_cert_url": process.env.client_x509_cert_url
 }
 
-console.log('account:', serviceAccount);
+console.log('service account exist?:', serviceAccount != null);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),

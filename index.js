@@ -62,6 +62,10 @@ app.get("/download", (req, res) => {
   var path = require("path");
   var temp_dir = path.join(process.cwd(), "temp/");
 
+if (!fs.existsSync(temp_dir)){
+    fs.mkdirSync(temp_dir);
+}
+
   const tempPath = `${temp_dir}file.jpg`;
   const file = fs.createWriteStream(`${temp_dir}file.jpg`);
   console.log("file will save at ", tempPath);

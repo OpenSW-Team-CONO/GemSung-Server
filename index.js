@@ -71,7 +71,7 @@ if (!fs.existsSync(temp_dir)){
   console.log("file will save at ", tempPath);
   const options = {
     url:
-      "https://live.staticflickr.com/7151/6760135001_14c59a1490_o.jpg",
+      req.query['url'] || "https://live.staticflickr.com/7151/6760135001_14c59a1490_o.jpg",
     dest: tempPath // Save to /path/to/dest/image.jpg
   };
   download

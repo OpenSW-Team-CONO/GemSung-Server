@@ -3,6 +3,29 @@ var express = require("express");
 var app = express();
 const bodyParser = require("body-parser");
 
+const admin = require("firebase-admin");
+
+const serviceAccount = {
+  "type": process.env.type,
+  "project_id": process.env.project_id,
+  "private_key_id": process.env.private_key_id,
+  "private_key": process.env.private_key.replace(/\\n/g, '\n'),
+  "client_email": process.env.client_email,
+  "client_id": process.env.client_id,
+  "auth_uri": process.env.auth_uri,
+  "token_uri": process.env.token_uri,
+  "auth_provider_x509_cert_url": process.env.auth_provider_x509_cert_url,
+  "client_x509_cert_url": process.env.client_x509_cert_url
+}
+
+console.log('account:', serviceAccount);
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  storageBucket: process.env.bucketName
+});
+
+
 app.use(bodyParser.json());
 
 app.get("/", function(req, res) {
@@ -35,21 +58,13 @@ app.post("/video", function(req, res) {
 });
 
 app.get("/test", function(req, res) {
+  console.log('env type:', process.env.type);
   const keyFilename = "./private/service-account.json";
   const projectId = "the-gemsung";
-  const bucketName = "the-gemsung.appspot.com";
   const filePath = `./package.json`;
   const mime = require("mime");
   const uploadTo = `testfolder/package.json`;
   const fileMime = mime.getType(filePath);
-  const admin = require("firebase-admin");
-
-  const serviceAccount = require(keyFilename);
-
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    storageBucket: bucketName
-  });
 
   const bucket = admin.storage().bucket();
   bucket.upload(
@@ -65,7 +80,7 @@ app.get("/test", function(req, res) {
         res.send(`error ${err}`);
         return;
       } else {
-        console.log("file", file);
+        // console.log("file", file);
         res.send("ok");
         return;
       }

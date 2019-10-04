@@ -23,6 +23,8 @@
     "express": "^4.17.1",
     "firebase-admin": "^8.6.0",
     "fs": "0.0.1-security",
+    "http": "0.0.0",
+    "image-downloader": "^3.5.0",
     "mime": "^2.4.4",
     "path": "^0.12.7"
   }

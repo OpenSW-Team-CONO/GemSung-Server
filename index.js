@@ -6,25 +6,24 @@ const bodyParser = require("body-parser");
 const admin = require("firebase-admin");
 
 const serviceAccount = {
-  "type": process.env.type,
-  "project_id": process.env.project_id,
-  "private_key_id": process.env.private_key_id,
-  "private_key": process.env.private_key.replace(/\\n/g, '\n'),
-  "client_email": process.env.client_email,
-  "client_id": process.env.client_id,
-  "auth_uri": process.env.auth_uri,
-  "token_uri": process.env.token_uri,
-  "auth_provider_x509_cert_url": process.env.auth_provider_x509_cert_url,
-  "client_x509_cert_url": process.env.client_x509_cert_url
-}
+  type: process.env.type,
+  project_id: process.env.project_id,
+  private_key_id: process.env.private_key_id,
+  private_key: process.env.private_key.replace(/\\n/g, "\n"),
+  client_email: process.env.client_email,
+  client_id: process.env.client_id,
+  auth_uri: process.env.auth_uri,
+  token_uri: process.env.token_uri,
+  auth_provider_x509_cert_url: process.env.auth_provider_x509_cert_url,
+  client_x509_cert_url: process.env.client_x509_cert_url
+};
 
-console.log('service account exist?:', serviceAccount != null);
+console.log("service account exist?:", serviceAccount != null);
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   storageBucket: process.env.bucketName
 });
-
 
 app.use(bodyParser.json());
 
@@ -57,15 +56,64 @@ app.post("/video", function(req, res) {
   res.send("ok");
 });
 
-app.get('/temp', (req, res) => {
+app.get("/download", (req, res) => {
+  const download = require("image-downloader");
   var fs = require("fs");
   var path = require("path");
-  var temp_dir = path.join(process.cwd(), 'temp/');
+  var temp_dir = path.join(process.cwd(), "temp/");
+
+  const tempPath = `${temp_dir}file.jpg`;
+  const file = fs.createWriteStream(`${temp_dir}file.jpg`);
+  console.log("file will save at ", tempPath);
+  const options = {
+    url:
+      "https://www.nasa.gov/sites/default/files/styles/full_width/public/thumbnails/image/hs-2015-02-a-hires_jpg.jpg?itok=-DDRNP3D",
+    dest: tempPath // Save to /path/to/dest/image.jpg
+  };
+  download
+    .image(options)
+    .then(({ filename, image }) => {
+      console.log("Saved to", filename); // Saved to /path/to/dest/image.jpg
+      console.log("file saved, load and upload process start");
+      const filePath = tempPath;
+      const mime = require("mime");
+      const uploadTo = `testfolder/file.jpg`;
+      const fileMime = mime.getType(filePath);
+
+      const bucket = admin.storage().bucket();
+      bucket.upload(
+        filePath,
+        {
+          destination: uploadTo,
+          public: true,
+          metadata: { contentType: fileMime }
+        },
+        function(err, file) {
+          if (err) {
+            console.log(err);
+            res.send(`error ${err}`);
+            return;
+          } else {
+            // console.log("file", file);
+            console.log("ok");
+            res.send("ok");
+            return;
+          }
+        }
+      );
+    })
+    .catch(err => console.error(err));
+});
+
+app.get("/temp", (req, res) => {
+  var fs = require("fs");
+  var path = require("path");
+  var temp_dir = path.join(process.cwd(), "temp/");
   res.send(`path: ${temp_dir}`);
 });
 
 app.get("/test", function(req, res) {
-  console.log('env type:', process.env.type);
+  console.log("env type:", process.env.type);
   const keyFilename = "./private/service-account.json";
   const projectId = "the-gemsung";
   const filePath = `./package.json`;

@@ -236,8 +236,17 @@ videoshow(images, videoOptions)
           } else {
             // console.log("file", file);
             console.log("ok");
-            res.send("ok");
-            return;
+            file.getSignedUrl({
+              action: 'read',
+              expires: '03-09-2491'
+            }).then(signedUrls => {
+              // signedUrls[0] contains the file's public URL
+              res.send(JSON.stringify(signedUrls));
+              return;
+            }).catch(err => {
+              res.send(`Error ${err}`)
+              return;
+            });
           }
         }
       );

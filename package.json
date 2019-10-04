@@ -17,8 +17,11 @@
   },
   "homepage": "https://github.com/OpenSW-Team-CONO/GemSung-Server#readme",
   "dependencies": {
+    "@google-cloud/storage": "^3.3.1",
     "body-parser": "^1.19.0",
     "child_process": "^1.0.2",
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "firebase-admin": "^8.6.0",
+    "mime": "^2.4.4"
   }
 }

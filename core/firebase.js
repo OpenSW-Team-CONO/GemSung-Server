@@ -39,13 +39,28 @@ exports.updateVideoProcess = (videoKey, state, message = null, urls = null) => {
     const ref = db.ref(`${videoKey}`);
     const flagRef = ref.child('flag');
     flagRef.set(state)
-    console.log(`[firebase] [updateVideoProcess] flag set ${state}`)
+    .then(() => {
+      console.log(`[firebase] [updateVideoProcess] flag set ${state}`)
+    })
+    .catch((err) => {
+      console.error(`[firebase] [updateVideoProcess] flag set failed ${err}`)
+    })
 
     const urlsRef = ref.child('urls');
-    urlsRef.set(urls);
-    console.log(`[firebase] [updateVideoProcess] urls ${urls}`)
+    urlsRef.set(urls)
+      .then(() => {
+        console.log(`[firebase] [updateVideoProcess] urls set ${urls}`)
+      })
+      .catch((err) => {
+        console.error(`[firebase] [updateVideoProcess] urls set failed${err}`)
+      });
 
     const messageRef = ref.child('message');
-    messageRef.set(message);
-    console.log(`[firebase] [updateVideoProcess] message ${message}`);
+    messageRef.set(message)
+    .then(() => {
+      console.log(`[firebase] [updateVideoProcess] message set ${message}`);
+    })
+    .catch((err) => {
+      console.error(`[firebase] [updateVideoProcess] message set failed ${err}`);
+    });
 }

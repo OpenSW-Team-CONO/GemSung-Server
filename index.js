@@ -7,6 +7,7 @@ const bodyParser = require("body-parser");
 global.admin = require("firebase-admin");
 
 const testRoute = require('./route/test');
+const videoRoute = require('./route/video');
 
 const serviceAccount = {
   type: process.env.type,
@@ -21,7 +22,7 @@ const serviceAccount = {
   client_x509_cert_url: process.env.client_x509_cert_url
 };
 
-console.log("service account exist?:", serviceAccount != null);
+console.log("[index] [init] service account exist?:", serviceAccount != null);
 
 global.admin.initializeApp({
   credential: global.admin.credential.cert(serviceAccount),
@@ -41,6 +42,8 @@ app.get('/uploadTest', testRoute.uploadTest);
 app.get('/makeTestVideoAndUpload', testRoute.makeTestVideoAndUpload);
 app.post('/videoReq', testRoute.videoReq);
 
+app.post('/generate', videoRoute.makeVideo);
+
 app.listen(PORT, function() {
-  console.log(`Example app listening on port ${PORT}!`);
+  console.log(`[index] [init] server started. port: ${PORT}!`);
 });

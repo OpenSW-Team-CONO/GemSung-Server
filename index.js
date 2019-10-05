@@ -26,7 +26,8 @@ console.log("[index] [init] service account exist?:", serviceAccount != null);
 
 global.admin.initializeApp({
   credential: global.admin.credential.cert(serviceAccount),
-  storageBucket: process.env.bucketName
+  storageBucket: process.env.bucketName,
+  databaseURL: 'https://the-gemsung.firebaseio.com'
 });
 
 app.use(bodyParser.json());

@@ -34,6 +34,18 @@ exports.uploadFile = (videoKey, filePath, callbackFunc) => {
     );
 }
 
-exports.updateVideoProcess = (videoKey, url, message) => {
+exports.updateVideoProcess = (videoKey, state, message = null, urls = null) => {
+    const db = global.admin.database();
+    const ref = db.ref(`${videoKey}`);
+    const flagRef = ref.child('flag');
+    flagRef.set(state)
+    console.log(`[firebase] [updateVideoProcess] flag set ${state}`)
 
+    const urlsRef = ref.child('urls');
+    urlsRef.set(urls);
+    console.log(`[firebase] [updateVideoProcess] urls ${urls}`)
+
+    const messageRef = ref.child('message');
+    messageRef.set(message);
+    console.log(`[firebase] [updateVideoProcess] message ${message}`);
 }

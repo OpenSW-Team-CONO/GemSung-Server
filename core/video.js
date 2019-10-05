@@ -64,6 +64,7 @@ exports.videoGenerate = (videoKey, data) => {
     const makeVideoDir = fileManager.makeVideoDir;
     const downloadImages = fileManager.downloadImages;
     const uploadFile = firebaseManager.uploadFile;
+    const updateVideoProcess = firebaseManager.updateVideoProcess;
     const makeVideo = this.makeVideo;
 
     const videoPath = makeVideoDir(videoKey);
@@ -81,19 +82,23 @@ exports.videoGenerate = (videoKey, data) => {
                     uploadFile(videoKey, generatedVideoPath, signedUrls => {
                         fileManager.removeDir(videoPath);
                         if (signedUrls) {
-                            
+                            updateVideoProcess(videoKey, 2, 'ok', signedUrls);
+                            console.log(`[video] [videoGenerate] ${videoKey} end of generate video`)
                         } else {
                             console.error(`[video] [videoGenerate] ${videoKey} failed to upload video`)
+                            updateVideoProcess(videoKey, -3, 'Upload video failed')
                         }
                     })
                 } else {
                     console.error(`[video] [videoGenerate] ${videoKey} failed to generate video`)
                     fileManager.removeDir(videoPath)
+                    updateVideoProcess(videoKey, -2, 'Generate video failed')
                 }
             })
         } else {
             console.error(`[video] [videoGenerate] ${videoKey} failed to download images`);
             fileManager.removeDir(videoPath)
+            updateVideoProcess(videoKey, -1, 'Download images failed')
         }
     })
 }

@@ -60,8 +60,10 @@ exports.makeVideo = (videoKey, makePath, data, callbackFunc) => {
 
 exports.videoGenerate = (videoKey, data) => {
     const fileManager = require('./file');
+    const firebaseManager = require('./firebase')
     const makeVideoDir = fileManager.makeVideoDir;
     const downloadImages = fileManager.downloadImages;
+    const uploadFile = firebaseManager.uploadFile;
     const makeVideo = this.makeVideo;
 
     const videoPath = makeVideoDir(videoKey);
@@ -75,12 +77,23 @@ exports.videoGenerate = (videoKey, data) => {
             makeVideo(videoKey, videoPath, data, (generatedVideoPath) => {
                 if (generatedVideoPath) {
                     console.log(`[video] [videoGenerate] ${videoKey} ok video generated at ${generatedVideoPath}`)
+
+                    uploadFile(videoKey, generatedVideoPath, signedUrls => {
+                        fileManager.removeDir(videoPath);
+                        if (signedUrls) {
+                            
+                        } else {
+                            console.error(`[video] [videoGenerate] ${videoKey} failed to upload video`)
+                        }
+                    })
                 } else {
                     console.error(`[video] [videoGenerate] ${videoKey} failed to generate video`)
+                    fileManager.removeDir(videoPath)
                 }
             })
         } else {
             console.error(`[video] [videoGenerate] ${videoKey} failed to download images`);
+            fileManager.removeDir(videoPath)
         }
     })
 }

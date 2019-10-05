@@ -18,6 +18,11 @@ exports.makeVideoDir = videoKey => {
   return videoPath;
 };
 
+exports.removeDir = path => {
+    const rimraf = require("rimraf");
+    rimraf.sync(path);
+}
+
 exports.downloadImages = (videoPath, data, callbackFunc) => {
   const downloader = require("image-downloader");
   let counter = 0;

@@ -28,6 +28,7 @@
     "image-downloader": "^3.5.0",
     "mime": "^2.4.4",
     "path": "^0.12.7",
+    "rimraf": "^3.0.0",
     "videoshow": "^0.1.11"
   }
 }

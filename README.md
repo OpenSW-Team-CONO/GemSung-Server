@@ -1,4 +1,4 @@
-# Gemsung-Firebase
+# Gemsung-Server
 
 영상 제작 요청 정보를 클라이언트가 업로드 하고 실제 영상 제작 요청을 `AWS` 서버에 전달하는 트리거
 
